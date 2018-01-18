@@ -5,6 +5,9 @@ import (
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/gorilla/mux"
+	"github.com/urfave/negroni"
 )
 
 var apiList Entries
@@ -21,9 +24,17 @@ func main() {
 	}
 	file.Close()
 
-	http.HandleFunc("/api", getEntriesHandler)
-	http.HandleFunc("/health-check", healthCheckHandler)
+	r := mux.NewRouter()
+	r.HandleFunc("/api", getEntriesHandler)
+	r.HandleFunc("/health-check", healthCheckHandler)
+
+	n := negroni.New()
+	recovery := negroni.NewRecovery()
+	recovery.PrintStack = false
+	n.Use(recovery)
+	n.Use(negroni.NewLogger())
+	n.UseHandler(r)
 
 	log.Println("listening on port 8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(":8080", n))
 }
