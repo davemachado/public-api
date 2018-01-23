@@ -6,7 +6,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/gorilla/mux"
+	"github.com/didip/tollbooth"
+	"github.com/didip/tollbooth_negroni"
 	"github.com/urfave/negroni"
 )
 
@@ -24,16 +25,25 @@ func main() {
 	}
 	file.Close()
 
-	r := mux.NewRouter()
-	r.HandleFunc("/api", getEntriesHandler)
-	r.HandleFunc("/health-check", healthCheckHandler)
+	mux := http.NewServeMux()
+
+	limiter := tollbooth.NewLimiter(1, nil)
+
+	mux.Handle("/api", negroni.New(
+		tollbooth_negroni.LimitHandler(limiter),
+		negroni.Wrap(getEntriesHandler()),
+	))
+	mux.Handle("/health-check", negroni.New(
+		tollbooth_negroni.LimitHandler(limiter),
+		negroni.Wrap(healthCheckHandler()),
+	))
 
 	n := negroni.New()
 	recovery := negroni.NewRecovery()
 	recovery.PrintStack = false
 	n.Use(recovery)
 	n.Use(negroni.NewLogger())
-	n.UseHandler(r)
+	n.UseHandler(mux)
 
 	log.Println("listening on port 8080")
 	log.Fatal(http.ListenAndServe(":8080", n))

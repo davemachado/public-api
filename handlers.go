@@ -57,47 +57,51 @@ func checkEntryMatches(entry Entry, request *SearchRequest) bool {
 
 // getEntriesHandler returns an Entries object with the matching entries filtered
 // by the search request
-func getEntriesHandler(w http.ResponseWriter, req *http.Request) {
-	// Only allow GET requests
-	if req.Method != http.MethodGet {
-		w.WriteHeader(http.StatusMethodNotAllowed)
-		return
-	}
-
-	var err error
-	searchReq := new(SearchRequest)
-	// Only check query parameters if the request's Body is not nil
-	if req.Body != nil {
-		// Decode incoming search request off the query parameters map.
-		err = schema.NewDecoder().Decode(searchReq, req.URL.Query())
-		if err != nil {
-			http.Error(w, "server failed to parse request: "+err.Error(), http.StatusBadRequest)
+func getEntriesHandler() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+		// Only allow GET requests
+		if req.Method != http.MethodGet {
+			w.WriteHeader(http.StatusMethodNotAllowed)
 			return
 		}
-		defer req.Body.Close()
-	}
 
-	var results []Entry
-	for _, e := range apiList.Entries {
-		if checkEntryMatches(e, searchReq) {
-			results = append(results, e)
+		var err error
+		searchReq := new(SearchRequest)
+		// Only check query parameters if the request's Body is not nil
+		if req.Body != nil {
+			// Decode incoming search request off the query parameters map.
+			err = schema.NewDecoder().Decode(searchReq, req.URL.Query())
+			if err != nil {
+				http.Error(w, "server failed to parse request: "+err.Error(), http.StatusBadRequest)
+				return
+			}
+			defer req.Body.Close()
 		}
-	}
 
-	w.Header().Set("Content-Type", "application/json")
-	err = json.NewEncoder(w).Encode(Entries{
-		Count:   len(results),
-		Entries: results,
+		var results []Entry
+		for _, e := range apiList.Entries {
+			if checkEntryMatches(e, searchReq) {
+				results = append(results, e)
+			}
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		err = json.NewEncoder(w).Encode(Entries{
+			Count:   len(results),
+			Entries: results,
+		})
+		if err != nil {
+			http.Error(w, "server failed to encode response object: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
 	})
-	if err != nil {
-		http.Error(w, "server failed to encode response object: "+err.Error(), http.StatusInternalServerError)
-		return
-	}
 }
 
 // healthCheckHandler returns a simple indication on whether or not the core http service is running
-func healthCheckHandler(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
-	w.Header().Set("Content-Type", "application/json")
-	io.WriteString(w, `{"alive": true}`)
+func healthCheckHandler() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Header().Set("Content-Type", "application/json")
+		io.WriteString(w, `{"alive": true}`)
+	})
 }
