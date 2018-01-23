@@ -1,3 +1,10 @@
+sudo: required
 language: go
 go:
-  - 1.8
+    - 1.8
+services:
+    - docker
+
+script:
+    - wget https://raw.githubusercontent.com/toddmotto/public-apis/master/json/entries.min.json
+    - make && make login && make push
