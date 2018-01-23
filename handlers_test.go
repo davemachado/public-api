@@ -35,7 +35,7 @@ func TestHealthCheckHandler(t *testing.T) {
 		t.Fatal(err)
 	}
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(healthCheckHandler)
+	handler := healthCheckHandler()
 
 	handler.ServeHTTP(rr, req)
 
@@ -56,7 +56,7 @@ func TestGetEntriesHandler(t *testing.T) {
 		t.Fatal(err)
 	}
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(getEntriesHandler)
+	handler := getEntriesHandler()
 
 	handler.ServeHTTP(rr, req)
 
@@ -71,7 +71,7 @@ func TestGetEntriesWithBadMethod(t *testing.T) {
 		t.Fatal(err)
 	}
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(getEntriesHandler)
+	handler := getEntriesHandler()
 
 	handler.ServeHTTP(rr, req)
 
