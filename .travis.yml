@@ -5,5 +5,6 @@ services:
     - docker
 
 script:
+    - go get -v ./...
     - wget https://raw.githubusercontent.com/toddmotto/public-apis/master/json/entries.min.json
     - make && make login && make push
