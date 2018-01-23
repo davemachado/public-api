@@ -7,4 +7,10 @@ services:
 script:
     - go get -v ./...
     - wget https://raw.githubusercontent.com/toddmotto/public-apis/master/json/entries.min.json
-    - make && make login && make push
+    - make
+
+deploy:
+    - provider: script
+      script: make login && make push
+      on:
+          branch: master
