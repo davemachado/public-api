@@ -21,8 +21,12 @@
 
 
 [[constraint]]
-  name = "github.com/gorilla/mux"
-  version = "1.6.1"
+  name = "github.com/didip/tollbooth"
+  version = "3.0.2"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/didip/tollbooth_negroni"
 
 [[constraint]]
   branch = "master"

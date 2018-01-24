@@ -2,6 +2,8 @@ package main
 
 import (
 	"encoding/json"
+	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -11,20 +13,30 @@ import (
 	"github.com/urfave/negroni"
 )
 
+const jsonUrl = "https://raw.githubusercontent.com/toddmotto/public-apis/master/json/entries.min.json"
+
 var apiList Entries
 
+// getList returns an Entries struct filled from the public-apis project
+func getList() Entries {
+	res, err := http.Get(jsonUrl)
+	if err != nil {
+		panic(err)
+	}
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		panic(err)
+	}
+	entries := new(Entries)
+	err = json.Unmarshal(body, &entries)
+	if err != nil {
+		panic(err)
+	}
+	return *entries
+}
+
 func main() {
-	file, err := os.OpenFile("./entries.min.json", os.O_RDONLY, 0644)
-	if err != nil {
-		panic("failed to open entries.min.json: " + err.Error())
-	}
-
-	err = json.NewDecoder(file).Decode(&apiList)
-	if err != nil {
-		panic("failed to decode JSON from file: " + err.Error())
-	}
-	file.Close()
-
+	apiList = getList()
 	mux := http.NewServeMux()
 
 	limiter := tollbooth.NewLimiter(1, nil)
@@ -38,11 +50,14 @@ func main() {
 		negroni.Wrap(healthCheckHandler()),
 	))
 
+	f, _ := os.Create("requests.log")
+	logWriter = io.MultiWriter(f, os.Stdout)
+
 	n := negroni.New()
 	recovery := negroni.NewRecovery()
 	recovery.PrintStack = false
 	n.Use(recovery)
-	n.Use(negroni.NewLogger())
+	n.Use(negroni.HandlerFunc(logger))
 	n.UseHandler(mux)
 
 	log.Println("listening on port 8080")

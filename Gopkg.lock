@@ -2,16 +2,21 @@
 
 
 [[projects]]
-  name = "github.com/gorilla/context"
-  packages = ["."]
-  revision = "1ea25387ff6f684839d82767c1733ff4d4d15d0a"
-  version = "v1.1"
+  name = "github.com/didip/tollbooth"
+  packages = [
+    ".",
+    "errors",
+    "libstring",
+    "limiter"
+  ]
+  revision = "b65680a2d5f624ed528d36f8406f31535555828a"
+  version = "v3.0.2"
 
 [[projects]]
-  name = "github.com/gorilla/mux"
+  branch = "master"
+  name = "github.com/didip/tollbooth_negroni"
   packages = ["."]
-  revision = "53c1911da2b537f792e7cafcb446b05ffe33b996"
-  version = "v1.6.1"
+  revision = "a4e3efc33255cee9eb045bac7016d1c2cdb63e67"
 
 [[projects]]
   branch = "master"
@@ -20,14 +25,32 @@
   revision = "afe77393c53b66afe9212810d9b2013859d04ae6"
 
 [[projects]]
+  name = "github.com/patrickmn/go-cache"
+  packages = ["."]
+  revision = "a3647f8e31d79543b2d0f0ae2fe5c379d72cedc0"
+  version = "v2.1.0"
+
+[[projects]]
   name = "github.com/urfave/negroni"
   packages = ["."]
   revision = "5dbbc83f748fc3ad38585842b0aedab546d0ea1e"
   version = "v0.3.0"
 
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/net"
+  packages = ["context"]
+  revision = "5ccada7d0a7ba9aeb5d3aca8d3501b4c2a509fec"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/time"
+  packages = ["rate"]
+  revision = "6dc17368e09b0e8634d71cac8168d853e869a0c7"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "65308dbbc2be1aa81aea959a85bb105b83ac5a46aef39c9bc30f051283309bc3"
+  inputs-digest = "18c00a284723cc326bf5a2300076d9fe943ad1b0e84ab553623a9cbb3e610a63"
   solver-name = "gps-cdcl"
   solver-version = 1
