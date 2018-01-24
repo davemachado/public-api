@@ -51,13 +51,15 @@ func main() {
 	))
 
 	f, _ := os.Create("requests.log")
-	logWriter = io.MultiWriter(f, os.Stdout)
+	logger := NewLogger(Options{
+		Out: io.MultiWriter(f, os.Stdout),
+	})
 
 	n := negroni.New()
 	recovery := negroni.NewRecovery()
 	recovery.PrintStack = false
 	n.Use(recovery)
-	n.Use(negroni.HandlerFunc(logger))
+	n.Use(negroni.HandlerFunc(logger.logFunc))
 	n.UseHandler(mux)
 
 	log.Println("listening on port 8080")
