@@ -13,7 +13,10 @@ import (
 	"github.com/urfave/negroni"
 )
 
-const jsonUrl = "https://raw.githubusercontent.com/toddmotto/public-apis/master/json/entries.min.json"
+const (
+	defaultLogFileName = "./public-api.log"
+	jsonUrl            = "https://raw.githubusercontent.com/toddmotto/public-apis/master/json/entries.min.json"
+)
 
 var apiList Entries
 
@@ -50,7 +53,11 @@ func main() {
 		negroni.Wrap(healthCheckHandler()),
 	))
 
-	f, _ := os.Create("requests.log")
+	filename := defaultLogFileName
+	if fileVar := os.Getenv("LOGFILE"); fileVar != "" {
+		filename = fileVar
+	}
+	f, _ := os.Create(filename)
 	logger := NewLogger(Options{
 		Out: io.MultiWriter(f, os.Stdout),
 	})
