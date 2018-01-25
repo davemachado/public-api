@@ -14,8 +14,7 @@ import (
 )
 
 const (
-	defaultLogFileName = "./public-api.log"
-	jsonUrl            = "https://raw.githubusercontent.com/toddmotto/public-apis/master/json/entries.min.json"
+	jsonUrl = "https://raw.githubusercontent.com/toddmotto/public-apis/master/json/entries.min.json"
 )
 
 var apiList Entries
@@ -53,14 +52,15 @@ func main() {
 		negroni.Wrap(healthCheckHandler()),
 	))
 
-	filename := defaultLogFileName
-	if fileVar := os.Getenv("LOGFILE"); fileVar != "" {
-		filename = fileVar
+	filename := os.Getenv("LOGFILE")
+	if filename == "" {
+		log.Fatal("$LOGFILE not set")
 	}
 	f, _ := os.Create(filename)
 	logger := NewLogger(Options{
 		Out: io.MultiWriter(f, os.Stdout),
 	})
+	log.Println("logging requests in " + filename)
 
 	n := negroni.New()
 	recovery := negroni.NewRecovery()

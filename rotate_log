@@ -1,0 +1,7 @@
+#!/bin/sh
+
+DATE=`date +%Y-%m-%d`
+filename="$DATE.log"
+
+cp $LOGFILE $filename
+> $LOGFILE
