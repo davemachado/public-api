@@ -15,14 +15,14 @@ import (
 )
 
 const (
-	jsonUrl = "https://raw.githubusercontent.com/toddmotto/public-apis/master/json/entries.min.json"
+	jsonURL = "https://raw.githubusercontent.com/toddmotto/public-apis/master/json/entries.min.json"
 )
 
 var apiList Entries
 
 // getList returns an Entries struct filled from the public-apis project
 func getList() Entries {
-	res, err := http.Get(jsonUrl)
+	res, err := http.Get(jsonURL)
 	if err != nil {
 		panic(err)
 	}
