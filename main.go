@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/didip/tollbooth"
 	"github.com/didip/tollbooth_negroni"
@@ -40,7 +41,15 @@ func getList() Entries {
 func main() {
 	mux := http.NewServeMux()
 
-	limiter := tollbooth.NewLimiter(1, nil)
+	rate := os.Getenv("RATE")
+	if rate == "" {
+		log.Fatal("$RATE not set")
+	}
+	i, err := strconv.Atoi(rate)
+	if err != nil {
+		panic(err)
+	}
+	limiter := tollbooth.NewLimiter(int64(i), nil)
 
 	mux.Handle("/", negroni.New(
 		tollbooth_negroni.LimitHandler(limiter),
