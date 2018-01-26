@@ -88,7 +88,7 @@ func (l *Logger) logFunc(rw http.ResponseWriter, r *http.Request, next http.Hand
 		}
 	}
 
-	l.Printf("| %3d | %13v | %15s | %8d | %5s %s\n", crw.status, end.Sub(start), addr, crw.size, r.Method, r.RequestURI)
+	l.Printf("| %3d | %13v | %25s | %8d | %5s %s\n", crw.status, end.Sub(start), addr, crw.size, r.Method, r.RequestURI)
 }
 
 type customResponseWriter struct {

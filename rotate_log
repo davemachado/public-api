@@ -1,7 +1,20 @@
-#!/bin/sh
+if [ "$#" -ne 2 ]; then
+    echo "error: $0 <logfile> <target directory>"
+    exit 1
+fi
 
+case "$2" in
+*/)
+    DIR=$2
+    ;;
+*)
+    DIR="$2/"
+    ;;
+esac
+
+source=$1
 DATE=`date +%Y-%m-%d`
-filename="$DATE.log"
+target="$DIR$DATE.log"
 
-cp $LOGFILE $filename
-> $LOGFILE
+cp $source $target
+> $source
