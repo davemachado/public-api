@@ -41,6 +41,10 @@ func getList() Entries {
 func main() {
 	mux := http.NewServeMux()
 
+	port := os.Getenv("PORT")
+	if port == "" {
+		log.Fatal("$PORT not set")
+	}
 	rate := os.Getenv("RATE")
 	if rate == "" {
 		log.Fatal("$RATE not set")
@@ -51,15 +55,6 @@ func main() {
 	}
 	limiter := tollbooth.NewLimiter(int64(i), nil)
 
-	mux.Handle("/", negroni.New(
-		tollbooth_negroni.LimitHandler(limiter),
-		negroni.Wrap(getEntriesHandler()),
-	))
-	mux.Handle("/health-check", negroni.New(
-		tollbooth_negroni.LimitHandler(limiter),
-		negroni.Wrap(healthCheckHandler()),
-	))
-
 	filename := os.Getenv("LOGFILE")
 	if filename == "" {
 		log.Fatal("$LOGFILE not set")
@@ -69,10 +64,14 @@ func main() {
 		Out: io.MultiWriter(f, os.Stdout),
 	})
 
-	port := os.Getenv("PORT")
-	if port == "" {
-		log.Fatal("$PORT not set")
-	}
+	mux.Handle("/entries", negroni.New(
+		tollbooth_negroni.LimitHandler(limiter),
+		negroni.Wrap(getEntriesHandler()),
+	))
+	mux.Handle("/health-check", negroni.New(
+		tollbooth_negroni.LimitHandler(limiter),
+		negroni.Wrap(healthCheckHandler()),
+	))
 
 	n := negroni.New()
 	recovery := negroni.NewRecovery()
