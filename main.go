@@ -38,12 +38,11 @@ func getList() Entries {
 }
 
 func main() {
-	apiList = getList()
 	mux := http.NewServeMux()
 
 	limiter := tollbooth.NewLimiter(1, nil)
 
-	mux.Handle("/api", negroni.New(
+	mux.Handle("/", negroni.New(
 		tollbooth_negroni.LimitHandler(limiter),
 		negroni.Wrap(getEntriesHandler()),
 	))
@@ -60,7 +59,11 @@ func main() {
 	logger := NewLogger(Options{
 		Out: io.MultiWriter(f, os.Stdout),
 	})
-	log.Println("logging requests in " + filename)
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		log.Fatal("$PORT not set")
+	}
 
 	n := negroni.New()
 	recovery := negroni.NewRecovery()
@@ -69,6 +72,9 @@ func main() {
 	n.Use(negroni.HandlerFunc(logger.logFunc))
 	n.UseHandler(mux)
 
-	log.Println("listening on port 8080")
-	log.Fatal(http.ListenAndServe(":8080", n))
+	apiList = getList()
+
+	log.Println("logging requests in " + filename)
+	log.Printf("listening on port %s\n", port)
+	log.Fatal(http.ListenAndServe(":"+port, n))
 }
