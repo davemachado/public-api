@@ -44,11 +44,10 @@ func checkEntryMatches(entry Entry, request *SearchRequest) bool {
 		strings.Contains(strings.ToLower(entry.Category), strings.ToLower(request.Category)) {
 		if request.HTTPS == "" {
 			return true
-		} else {
-			if value, err := strconv.ParseBool(request.HTTPS); err == nil {
-				if entry.HTTPS == value {
-					return true
-				}
+		}
+		if value, err := strconv.ParseBool(request.HTTPS); err == nil {
+			if entry.HTTPS == value {
+				return true
 			}
 		}
 	}

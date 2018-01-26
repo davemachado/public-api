@@ -30,6 +30,7 @@ type Logger struct {
 	opt Options
 }
 
+// NewLogger returns a reference to a configured instance of Logger
 func NewLogger(opts ...Options) *Logger {
 	var o Options
 	if len(opts) == 0 {
