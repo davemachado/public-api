@@ -10,7 +10,7 @@ http://publicapis.org/api/
 
 ---
 
-# Entries
+# Services
 ## **GET** /entries
 
 *List all entries currently cataloged in the project*
