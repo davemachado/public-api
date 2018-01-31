@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -14,40 +13,35 @@ import (
 	"github.com/urfave/negroni"
 )
 
-const (
-	jsonURL = "https://raw.githubusercontent.com/toddmotto/public-apis/master/json/entries.min.json"
-)
-
 var apiList Entries
 
 // getList returns an Entries struct filled from the public-apis project
-func getList() Entries {
-	res, err := http.Get(jsonURL)
+func getList(jsonFile string) {
+	file, err := os.OpenFile(jsonFile, os.O_RDONLY, 0644)
 	if err != nil {
-		panic(err)
+		panic("failed to open file: " + err.Error())
 	}
-	body, err := ioutil.ReadAll(res.Body)
+
+	err = json.NewDecoder(file).Decode(&apiList)
 	if err != nil {
-		panic(err)
+		panic("failed to decode JSON from file: " + err.Error())
 	}
-	entries := new(Entries)
-	err = json.Unmarshal(body, &entries)
-	if err != nil {
-		panic(err)
-	}
-	return *entries
+	file.Close()
 }
 
 func main() {
-	mux := http.NewServeMux()
-
+	jsonFile := os.Getenv("JSONFILE")
+	if jsonFile == "" {
+		jsonFile = "/entries.json"
+	}
+	getList(jsonFile)
 	port := os.Getenv("PORT")
 	if port == "" {
-		log.Fatal("$PORT not set")
+		port = "8080"
 	}
 	rate := os.Getenv("RATE")
 	if rate == "" {
-		log.Fatal("$RATE not set")
+		rate = "10"
 	}
 	i, err := strconv.Atoi(rate)
 	if err != nil {
@@ -57,13 +51,14 @@ func main() {
 
 	filename := os.Getenv("LOGFILE")
 	if filename == "" {
-		log.Fatal("$LOGFILE not set")
+		filename = "/tmp/public-api.log"
 	}
 	f, _ := os.Create(filename)
 	logger := NewLogger(Options{
 		Out: io.MultiWriter(f, os.Stdout),
 	})
 
+	mux := http.NewServeMux()
 	mux.Handle("/entries", negroni.New(
 		tollbooth_negroni.LimitHandler(limiter),
 		negroni.Wrap(getEntriesHandler()),
@@ -79,8 +74,6 @@ func main() {
 	n.Use(recovery)
 	n.Use(negroni.HandlerFunc(logger.logFunc))
 	n.UseHandler(mux)
-
-	apiList = getList()
 
 	log.Println("logging requests in " + filename)
 	log.Printf("listening on port %s\n", port)
