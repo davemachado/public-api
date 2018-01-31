@@ -12,6 +12,7 @@ func TestCheckEntryMatches(t *testing.T) {
 		Description: "provide classic examples of classic things",
 		Auth:        "apiKey",
 		HTTPS:       true,
+		Cors:        "Unknown",
 		Link:        "http://www.example.com",
 		Category:    "Development",
 	}
@@ -24,6 +25,10 @@ func TestCheckEntryMatches(t *testing.T) {
 		t.Errorf("failed to match entry and search")
 	}
 	search.Auth = "OAuth"
+	if checkEntryMatches(entry, search) {
+		t.Errorf("failed to match entry and search")
+	}
+	search.Cors = "unknown"
 	if checkEntryMatches(entry, search) {
 		t.Errorf("failed to match entry and search")
 	}

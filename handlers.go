@@ -16,6 +16,7 @@ type SearchRequest struct {
 	Description string `schema:"description"`
 	Auth        string `schema:"auth"`
 	HTTPS       string `schema:"https"`
+	Cors        string `schema:"cors"`
 	Category    string `schema:"category"`
 }
 
@@ -31,6 +32,7 @@ type Entry struct {
 	Description string
 	Auth        string
 	HTTPS       bool
+	Cors        string
 	Link        string
 	Category    string
 }
@@ -41,6 +43,7 @@ func checkEntryMatches(entry Entry, request *SearchRequest) bool {
 	if strings.Contains(strings.ToLower(entry.API), strings.ToLower(request.Title)) &&
 		strings.Contains(strings.ToLower(entry.Description), strings.ToLower(request.Description)) &&
 		strings.Contains(strings.ToLower(entry.Auth), strings.ToLower(request.Auth)) &&
+		strings.Contains(strings.ToLower(entry.Cors), strings.ToLower(request.Cors)) &&
 		strings.Contains(strings.ToLower(entry.Category), strings.ToLower(request.Category)) {
 		if request.HTTPS == "" {
 			return true
