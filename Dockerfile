@@ -8,7 +8,6 @@ ADD . $SRC_DIR
 WORKDIR $SRC_DIR
 
 RUN dep ensure -vendor-only
-RUN curl -fsSl -o entries.min.json https://raw.githubusercontent.com/toddmotto/public-apis/master/json/entries.min.json 
 
 RUN go build
 

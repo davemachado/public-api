@@ -4,12 +4,6 @@ go: 1.8
 services:
     - docker
 
-script:
-    - go get -v ./...
-    - wget https://raw.githubusercontent.com/toddmotto/public-apis/master/json/entries.min.json
-    - go test -race -coverprofile=coverage.txt -covermode=atomic
-    - make
-
 after_success:
     - bash <(curl -s https://codecov.io/bash)
 

@@ -1,7 +1,6 @@
 FROM scratch
 
 ADD ./public-api /public-api
-ADD ./entries.min.json /entries.min.json
 
 EXPOSE 8080
 ENTRYPOINT ["/public-api"]
