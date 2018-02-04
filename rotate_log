@@ -13,7 +13,7 @@ case "$2" in
 esac
 
 source=$1
-DATE=`date +%Y-%m-%d`
+DATE=`date +%Y-%m-%d_%H:%M`
 target="$DIR$DATE.log"
 
 cp $source $target
