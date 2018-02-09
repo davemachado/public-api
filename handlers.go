@@ -88,6 +88,7 @@ func getEntriesHandler() http.Handler {
 		}
 
 		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		err = json.NewEncoder(w).Encode(Entries{
 			Count:   len(results),
 			Entries: results,
@@ -104,6 +105,7 @@ func healthCheckHandler() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		io.WriteString(w, `{"alive": true}`)
 	})
 }
