@@ -47,7 +47,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	limiter := tollbooth.NewLimiter(int64(i), nil)
+	limiter := tollbooth.NewLimiter(float64(i), nil)
 
 	filename := os.Getenv("LOGFILE")
 	if filename == "" {
