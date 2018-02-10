@@ -5,8 +5,10 @@
 
 So, the [public-apis](https://github.com/toddmotto/public-apis) project is all about collecting public API services from all corners of the internet, yet does not offer its own API... no longer!
 
+This service supports [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) and requires no authentication to use. All responses are sent over HTTPS as well.
+
 ## Base Endpoint
-http://publicapis.org/api/
+http://publicapis.org/api
 
 ---
 
