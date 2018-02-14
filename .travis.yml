@@ -4,6 +4,9 @@ go: 1.8
 services:
     - docker
 
+install:
+    - sudo apt-get install -y pandoc
+
 after_success:
     - bash <(curl -s https://codecov.io/bash)
 
