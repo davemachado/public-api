@@ -13,5 +13,9 @@ public-api
 coverage.txt
 *.out
 
+# Files generated during the build
+static/*.html
+*.json
+
 vendor/
 *.log

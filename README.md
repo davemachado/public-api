@@ -11,8 +11,11 @@ Please note that this service is still in beta, so some aspects are subject to c
 
 If you would like to leave feedback or request a feature, please [open an issue](https://github.com/davemachado/public-api/issues). If you would like to contribute, feel free to [open a pull request](https://github.com/davemachado/public-api/pulls).
 
+## Github Project
+https://github.com/davemachado/public-api
+
 ## Base URL
-http://publicapis.org/api
+https://api.publicapis.org/
 
 ---
 
@@ -38,4 +41,4 @@ Parameter | Type | Data Type | Description | Required
 None
 
 ---
-[![DigitalOcean](.github/DO_Powered_by_Badge_black.png)](https://www.digitalocean.com/)
+[![DigitalOcean](static/DO_Powered_by_Badge_black.png)](https://www.digitalocean.com/)
