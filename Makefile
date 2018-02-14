@@ -13,7 +13,7 @@ dep:
 test:
 	@go test -race -coverprofile=coverage.txt -covermode=atomic -v ./...
 
-build: dep test
+build: dep test html
 	@${ENV_FLAGS} go build
 	@docker build -t ${IMG} . -f Dockerfile.scratch
 	@docker tag ${IMG} ${LATEST}
