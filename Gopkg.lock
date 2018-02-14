@@ -9,8 +9,8 @@
     "libstring",
     "limiter"
   ]
-  revision = "b65680a2d5f624ed528d36f8406f31535555828a"
-  version = "v3.0.2"
+  revision = "c95eaa3ddc98f635a91e218b48727fb2e06613ea"
+  version = "v4.0.0"
 
 [[projects]]
   branch = "master"
@@ -40,7 +40,7 @@
   branch = "master"
   name = "golang.org/x/net"
   packages = ["context"]
-  revision = "5ccada7d0a7ba9aeb5d3aca8d3501b4c2a509fec"
+  revision = "f5dfe339be1d06f81b22525fe34671ee7d2c8904"
 
 [[projects]]
   branch = "master"
@@ -51,6 +51,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "18c00a284723cc326bf5a2300076d9fe943ad1b0e84ab553623a9cbb3e610a63"
+  inputs-digest = "2379ac2e78f6f03cb87c2fac0f7eae6b2bb0362c980b4b3027d2b51e53b08567"
   solver-name = "gps-cdcl"
   solver-version = 1
