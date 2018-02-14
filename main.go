@@ -59,6 +59,7 @@ func main() {
 	})
 
 	mux := http.NewServeMux()
+	mux.Handle("/", http.FileServer(http.Dir("./static")))
 	mux.Handle("/entries", negroni.New(
 		tollbooth_negroni.LimitHandler(limiter),
 		negroni.Wrap(getEntriesHandler()),

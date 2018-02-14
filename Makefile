@@ -26,6 +26,8 @@ login:
 
 data:
 	@curl -o /tmp/public-apis.md https://raw.githubusercontent.com/toddmotto/public-apis/master/README.md
-	@./md2json.py /tmp/public-apis.md
+	@./md2json.py /tmp/public-apis.md > entries.json
 	@rm /tmp/public-apis.md
 
+html:
+	pandoc --from gfm --to html --standalone README.md | sed -e "s/static\/DO_Powered/DO_Powered/g" > static/index.html
