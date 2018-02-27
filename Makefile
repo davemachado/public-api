@@ -14,7 +14,7 @@ test:
 	@go test -race -coverprofile=coverage.txt -covermode=atomic -v ./...
 
 build: dep test html
-	@${ENV_FLAGS} go build
+	@${ENV_FLAGS} go build -o public-api
 	@docker build -t ${IMG} . -f Dockerfile.scratch
 	@docker tag ${IMG} ${LATEST}
 
