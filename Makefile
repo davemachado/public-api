@@ -26,7 +26,7 @@ login:
 
 data:
 	@curl -o /tmp/public-apis.md https://raw.githubusercontent.com/toddmotto/public-apis/master/README.md
-	@./md2json.py /tmp/public-apis.md > entries.json
+	@./md2json /tmp/public-apis.md > entries.json
 	@rm /tmp/public-apis.md
 
 html:
