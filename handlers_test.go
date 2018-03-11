@@ -41,9 +41,7 @@ func TestHealthCheckHandler(t *testing.T) {
 	}
 	rr := httptest.NewRecorder()
 	handler := healthCheckHandler()
-
 	handler.ServeHTTP(rr, req)
-
 	if status := rr.Code; status != http.StatusOK {
 		t.Errorf("handler returned wrong status code: got %v want %v",
 			status, http.StatusOK)
@@ -62,9 +60,7 @@ func TestGetEntriesHandler(t *testing.T) {
 	}
 	rr := httptest.NewRecorder()
 	handler := getEntriesHandler()
-
 	handler.ServeHTTP(rr, req)
-
 	if status := rr.Code; status != http.StatusOK {
 		t.Errorf("handler returned wrong status code: got %v want %v",
 			status, http.StatusOK)
@@ -77,9 +73,7 @@ func TestGetEntriesWithBadMethod(t *testing.T) {
 	}
 	rr := httptest.NewRecorder()
 	handler := getEntriesHandler()
-
 	handler.ServeHTTP(rr, req)
-
 	if status := rr.Code; status != http.StatusMethodNotAllowed {
 		t.Errorf("handler returned wrong status code: got %v want %v",
 			status, http.StatusMethodNotAllowed)

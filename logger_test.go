@@ -16,18 +16,17 @@ var (
 	})
 )
 
+func expect(t *testing.T, a interface{}, b interface{}) {
+	if a != b {
+		t.Errorf("Expected [%v] (type %v) - Got [%v] (type %v)", b, reflect.TypeOf(b), a, reflect.TypeOf(a))
+	}
+}
+
 func TestNoConfig(t *testing.T) {
 	res := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/should/be/stdout/", nil)
 	req.RemoteAddr = "111.222.333.444"
 	myHandler.ServeHTTP(res, req)
-
 	expect(t, res.Code, http.StatusOK)
 	expect(t, res.Body.String(), "bar")
-}
-
-func expect(t *testing.T, a interface{}, b interface{}) {
-	if a != b {
-		t.Errorf("Expected [%v] (type %v) - Got [%v] (type %v)", b, reflect.TypeOf(b), a, reflect.TypeOf(a))
-	}
 }

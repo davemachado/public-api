@@ -10,32 +10,32 @@ import (
 	"github.com/gorilla/schema"
 )
 
-// SearchRequest describes an incoming search request.
-type SearchRequest struct {
-	Title       string `schema:"title"`
-	Description string `schema:"description"`
-	Auth        string `schema:"auth"`
-	HTTPS       string `schema:"https"`
-	Cors        string `schema:"cors"`
-	Category    string `schema:"category"`
-}
-
-// Entries contains an array of API entries, and a count representing the length of that array.
-type Entries struct {
-	Count   int     `json:"count"`
-	Entries []Entry `json:"entries"`
-}
-
-// Entry describes a single API reference.
-type Entry struct {
-	API         string
-	Description string
-	Auth        string
-	HTTPS       bool
-	Cors        string
-	Link        string
-	Category    string
-}
+type (
+	// SearchRequest describes an incoming search request.
+	SearchRequest struct {
+		Title       string `schema:"title"`
+		Description string `schema:"description"`
+		Auth        string `schema:"auth"`
+		HTTPS       string `schema:"https"`
+		Cors        string `schema:"cors"`
+		Category    string `schema:"category"`
+	}
+	// Entries contains an array of API entries, and a count representing the length of that array.
+	Entries struct {
+		Count   int     `json:"count"`
+		Entries []Entry `json:"entries"`
+	}
+	// Entry describes a single API reference.
+	Entry struct {
+		API         string
+		Description string
+		Auth        string
+		HTTPS       bool
+		Cors        string
+		Link        string
+		Category    string
+	}
+)
 
 // checkEntryMatches checks if the given entry matches the given request's parameters.
 // it returns true if the entry matches, and returns false otherwise.
