@@ -20,9 +20,18 @@ https://api.publicapis.org/
 ---
 
 # Services
+
+## **GET** /health-check
+
+*ping service to check if it is currently active*
+
+https://api.publicapis.org/health-check
+
 ## **GET** /entries
 
 *List all entries currently cataloged in the project*
+
+https://api.publicapis.org/entries
 
 ### Parameters
 Parameter | Type | Data Type | Description | Required
@@ -34,9 +43,8 @@ Parameter | Type | Data Type | Description | Required
 | cors | query | string | CORS support for entry ("yes", "no", or "unknown") | No |
 | category | query | string | return entries of a specific category | No |
 
-## **GET** /health-check
+For example, https://api.publicapis.org/entries?title=Do
 
-*ping service to check if it is currently active*
 
 ### Parameters
 None
