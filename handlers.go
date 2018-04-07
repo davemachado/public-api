@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
-	"strconv"
-	"strings"
 
 	"github.com/gorilla/schema"
 )
@@ -36,26 +34,6 @@ type (
 		Category    string
 	}
 )
-
-// checkEntryMatches checks if the given entry matches the given request's parameters.
-// it returns true if the entry matches, and returns false otherwise.
-func checkEntryMatches(entry Entry, request *SearchRequest) bool {
-	if strings.Contains(strings.ToLower(entry.API), strings.ToLower(request.Title)) &&
-		strings.Contains(strings.ToLower(entry.Description), strings.ToLower(request.Description)) &&
-		strings.Contains(strings.ToLower(entry.Auth), strings.ToLower(request.Auth)) &&
-		strings.Contains(strings.ToLower(entry.Cors), strings.ToLower(request.Cors)) &&
-		strings.Contains(strings.ToLower(entry.Category), strings.ToLower(request.Category)) {
-		if request.HTTPS == "" {
-			return true
-		}
-		if value, err := strconv.ParseBool(request.HTTPS); err == nil {
-			if entry.HTTPS == value {
-				return true
-			}
-		}
-	}
-	return false
-}
 
 // getEntriesHandler returns an Entries object with the matching entries filtered
 // by the search request

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"io"
 	"log"
 	"net/http"
@@ -15,32 +14,6 @@ import (
 
 var apiList Entries
 var categories []string
-
-// getList initializes an Entries struct filled from the public-apis project
-func getList(jsonFile string) {
-	file, err := os.OpenFile(jsonFile, os.O_RDONLY, 0644)
-	if err != nil {
-		panic("failed to open file: " + err.Error())
-	}
-
-	err = json.NewDecoder(file).Decode(&apiList)
-	if err != nil {
-		panic("failed to decode JSON from file: " + err.Error())
-	}
-	file.Close()
-}
-
-// getCategories initializes a string slice containing
-// all unique categories from a given slice of Entries
-func getCategories(entries []Entry) {
-	set := make(map[string]struct{})
-	for _, entry := range entries {
-		if _, exists := set[entry.Category]; !exists {
-			categories = append(categories, entry.Category)
-			set[entry.Category] = struct{}{}
-		}
-	}
-}
 
 func main() {
 	jsonFile := os.Getenv("JSONFILE")
