@@ -34,6 +34,9 @@ Parameter | Type | Data Type | Description | Required
 | cors | query | string | CORS support for entry ("yes", "no", or "unknown") | No |
 | category | query | string | return entries of a specific category | No |
 
+#### Example
+/entries?category=animals&https=true
+
 ## **GET** /health-check
 
 *ping service to check if it is currently active*
