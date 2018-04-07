@@ -23,14 +23,16 @@ func getList(jsonFile string) {
 
 // getCategories initializes a string slice containing
 // all unique categories from a given slice of Entries
-func getCategories(entries []Entry) {
+func parseCategories(entries []Entry) []string {
+	var cats []string
 	set := make(map[string]struct{})
 	for _, entry := range entries {
 		if _, exists := set[entry.Category]; !exists {
-			categories = append(categories, entry.Category)
+			cats = append(cats, entry.Category)
 			set[entry.Category] = struct{}{}
 		}
 	}
+	return cats
 }
 
 // checkEntryMatches checks if the given entry matches the given request's parameters.

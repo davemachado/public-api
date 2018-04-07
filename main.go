@@ -21,7 +21,7 @@ func main() {
 		jsonFile = "/entries.json"
 	}
 	getList(jsonFile)
-	getCategories(apiList.Entries)
+	categories = parseCategories(apiList.Entries)
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
