@@ -14,8 +14,9 @@ import (
 )
 
 var apiList Entries
+var categories []string
 
-// getList returns an Entries struct filled from the public-apis project
+// getList initializes an Entries struct filled from the public-apis project
 func getList(jsonFile string) {
 	file, err := os.OpenFile(jsonFile, os.O_RDONLY, 0644)
 	if err != nil {
@@ -29,12 +30,25 @@ func getList(jsonFile string) {
 	file.Close()
 }
 
+// getCategories initializes a string slice containing
+// all unique categories from a given slice of Entries
+func getCategories(entries []Entry) {
+	set := make(map[string]struct{})
+	for _, entry := range entries {
+		if _, exists := set[entry.Category]; !exists {
+			categories = append(categories, entry.Category)
+			set[entry.Category] = struct{}{}
+		}
+	}
+}
+
 func main() {
 	jsonFile := os.Getenv("JSONFILE")
 	if jsonFile == "" {
 		jsonFile = "/entries.json"
 	}
 	getList(jsonFile)
+	getCategories(apiList.Entries)
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
@@ -63,6 +77,10 @@ func main() {
 	mux.Handle("/entries", negroni.New(
 		tollbooth_negroni.LimitHandler(limiter),
 		negroni.Wrap(getEntriesHandler()),
+	))
+	mux.Handle("/categories", negroni.New(
+		tollbooth_negroni.LimitHandler(limiter),
+		negroni.Wrap(getCategoriesHandler()),
 	))
 	mux.Handle("/health-check", negroni.New(
 		tollbooth_negroni.LimitHandler(limiter),

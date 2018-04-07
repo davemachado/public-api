@@ -53,6 +53,20 @@ func TestHealthCheckHandler(t *testing.T) {
 	}
 }
 
+func TestGetCategoriesHandler(t *testing.T) {
+	req, err := http.NewRequest("GET", "/categories", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	rr := httptest.NewRecorder()
+	handler := healthCheckHandler()
+	handler.ServeHTTP(rr, req)
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("handler returned wrong status code: got %v want %v",
+			status, http.StatusOK)
+	}
+}
+
 func TestGetEntriesHandler(t *testing.T) {
 	req, err := http.NewRequest("GET", "/api", nil)
 	if err != nil {

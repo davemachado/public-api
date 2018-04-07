@@ -61,12 +61,10 @@ func checkEntryMatches(entry Entry, request *SearchRequest) bool {
 // by the search request
 func getEntriesHandler() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
-		// Only allow GET requests
 		if req.Method != http.MethodGet {
 			w.WriteHeader(http.StatusMethodNotAllowed)
 			return
 		}
-
 		var err error
 		searchReq := new(SearchRequest)
 		// Only check query parameters if the request's Body is not nil
@@ -79,20 +77,35 @@ func getEntriesHandler() http.Handler {
 			}
 			defer req.Body.Close()
 		}
-
 		var results []Entry
 		for _, e := range apiList.Entries {
 			if checkEntryMatches(e, searchReq) {
 				results = append(results, e)
 			}
 		}
-
 		w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		err = json.NewEncoder(w).Encode(Entries{
 			Count:   len(results),
 			Entries: results,
 		})
+		if err != nil {
+			http.Error(w, "server failed to encode response object: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+	})
+}
+
+// getCategoriesHandler returns a string slice object with all unique categories
+func getCategoriesHandler() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+		if req.Method != http.MethodGet {
+			w.WriteHeader(http.StatusMethodNotAllowed)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		err := json.NewEncoder(w).Encode(categories)
 		if err != nil {
 			http.Error(w, "server failed to encode response object: "+err.Error(), http.StatusInternalServerError)
 			return

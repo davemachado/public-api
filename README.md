@@ -37,6 +37,13 @@ Parameter | Type | Data Type | Description | Required
 #### Example
 /entries?category=animals&https=true
 
+## **GET** /categories
+
+*List all categories*
+
+### Parameters
+None
+
 ## **GET** /health-check
 
 *ping service to check if it is currently active*
