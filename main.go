@@ -55,7 +55,7 @@ func main() {
 		tollbooth_negroni.LimitHandler(limiter),
 		negroni.Wrap(getCategoriesHandler()),
 	))
-	mux.Handle("/health-check", negroni.New(
+	mux.Handle("/health", negroni.New(
 		tollbooth_negroni.LimitHandler(limiter),
 		negroni.Wrap(healthCheckHandler()),
 	))

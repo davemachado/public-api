@@ -44,9 +44,9 @@ Parameter | Type | Data Type | Description | Required
 ### Parameters
 None
 
-## **GET** /health-check
+## **GET** /health
 
-*ping service to check if it is currently active*
+*Check health of the running service*
 
 ### Parameters
 None
