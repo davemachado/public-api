@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/davemachado/public-api.svg?branch=master)](https://travis-ci.org/davemachado/public-api)
 [![Go Report Card](https://goreportcard.com/badge/github.com/davemachado/public-api)](https://goreportcard.com/report/github.com/davemachado/public-api)
 
-So, the [public-apis](https://github.com/toddmotto/public-apis) project is all about collecting public API services from all corners of the internet, yet does not offer its own API... no longer!
+Welcome to the official public API for the [public-apis](https://github.com/toddmotto/public-apis) project!
 
 This service supports [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) and requires no authentication to use. All responses are sent over HTTPS as well.
 
