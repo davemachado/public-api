@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 
 import json
+import re
 import sys
-
 
 def markdown_to_json(filename, anchor):
     """Convert a Markdown file into a JSON string"""
     category = ""
     entries = []
+    link_re = re.compile('\[(.+)\]\((http.*)\)')
     with open(filename) as fp:
         lines = (line.rstrip() for line in fp)
         lines = list(line for line in lines if line and
@@ -17,13 +18,20 @@ def markdown_to_json(filename, anchor):
             category = line.split(anchor)[1].strip()
             continue
         chunks = [x.strip() for x in line.split('|')[1:-1]]
+        raw_title = chunks[0]
+        title_re_match = link_re.match(raw_title)
+        if not title_re_match:
+            print("could not match {} to Link RegEx".format(raw_title))
+            sys.exit(1)
+        title = title_re_match.group(1)
+        link = title_re_match.group(2)
         entry = {
-            'API': chunks[0],
+            'API': title,
             'Description': chunks[1],
             'Auth': None if chunks[2].upper() == 'NO' else chunks[2].strip('`'),
             'HTTPS': True if chunks[3].upper() == 'YES' else False,
             'CORS': chunks[4].strip('`').lower(),
-            'Link': chunks[5].replace('[Go!]', '')[1:-1],
+            'Link': link,
             'Category': category,
         }
         entries.append(entry)
