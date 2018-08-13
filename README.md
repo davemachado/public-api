@@ -37,6 +37,13 @@ Parameter | Type | Data Type | Description | Required
 #### Example
 /entries?category=animals&https=true
 
+## **GET** /random
+
+*List a single entry selected at random*
+
+### Parameters
+None
+
 ## **GET** /categories
 
 *List all categories*

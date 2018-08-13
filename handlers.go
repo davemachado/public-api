@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"io"
+	"math/rand"
 	"net/http"
 
 	"github.com/gorilla/schema"
@@ -84,6 +85,26 @@ func getCategoriesHandler() http.Handler {
 		w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		err := json.NewEncoder(w).Encode(categories)
+		if err != nil {
+			http.Error(w, "server failed to encode response object: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+	})
+}
+
+// getRandomHandler returns an Entries object containing a random element from the Entries slice
+func getRandomHandler() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+		if req.Method != http.MethodGet {
+			w.WriteHeader(http.StatusMethodNotAllowed)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		err := json.NewEncoder(w).Encode(Entries{
+			Count:   1,
+			Entries: []Entry{apiList.Entries[rand.Intn(len(apiList.Entries))]},
+		})
 		if err != nil {
 			http.Error(w, "server failed to encode response object: "+err.Error(), http.StatusInternalServerError)
 			return
