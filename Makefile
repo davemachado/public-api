@@ -15,10 +15,12 @@ test:
 
 build: dep test html
 	@${ENV_FLAGS} go build -o public-api
+
+docker: build
 	@docker build -t ${IMG} . -f Dockerfile.scratch
 	@docker tag ${IMG} ${LATEST}
 
-push: login
+push: docker login
 	@docker push ${NAME}
 
 login:
@@ -30,4 +32,4 @@ data:
 	@rm /tmp/public-apis.md
 
 html:
-	pandoc --from markdown_github --to html --standalone README.md | sed -e "s/static\/DO_Powered/DO_Powered/g" > static/index.html
+	pandoc --from gfm --to html --standalone README.md | sed -e "s/static\/DO_Powered/DO_Powered/g" > static/index.html

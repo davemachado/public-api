@@ -12,6 +12,6 @@ after_success:
 
 deploy:
     - provider: script
-      script: make login && make push
+      script: make push
       on:
           branch: master
