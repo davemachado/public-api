@@ -39,6 +39,31 @@ func TestGetCategoriesHandler(t *testing.T) {
 	}
 }
 
+func TestGetRandomHandler(t *testing.T) {
+	req, err := http.NewRequest("GET", "/random", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	apiList.Entries = []Entry{
+		{
+			API:         "title",
+			Description: "description",
+			Auth:        "apiKey",
+			HTTPS:       false,
+			Cors:        "Cors",
+			Link:        "link",
+			Category:    "category",
+		},
+	}
+	rr := httptest.NewRecorder()
+	handler := getRandomHandler()
+	handler.ServeHTTP(rr, req)
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("handler returned wrong status code: got %v want %v",
+			status, http.StatusOK)
+	}
+}
+
 func TestGetEntriesHandler(t *testing.T) {
 	req, err := http.NewRequest("GET", "/api", nil)
 	if err != nil {
@@ -52,6 +77,7 @@ func TestGetEntriesHandler(t *testing.T) {
 			status, http.StatusOK)
 	}
 }
+
 func TestGetEntriesWithBadMethod(t *testing.T) {
 	req, err := http.NewRequest("POST", "/api", nil)
 	if err != nil {
