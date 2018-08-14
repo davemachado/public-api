@@ -40,7 +40,11 @@ func main() {
 	if filename == "" {
 		filename = "/tmp/public-api.log"
 	}
-	f, _ := os.Create(filename)
+	// If the file does not exist, create it. Otherwise, append to the file.
+	f, err := os.OpenFile(filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		panic(err)
+	}
 	logger := NewLogger(Options{
 		Out: io.MultiWriter(f, os.Stdout),
 	})
