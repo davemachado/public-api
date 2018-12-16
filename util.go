@@ -40,7 +40,7 @@ func parseCategories(entries []Entry) []string {
 func checkEntryMatches(entry Entry, request *SearchRequest) bool {
 	if strings.Contains(strings.ToLower(entry.API), strings.ToLower(request.Title)) &&
 		strings.Contains(strings.ToLower(entry.Description), strings.ToLower(request.Description)) &&
-		strings.Contains(strings.ToLower(entry.Auth), strings.ToLower(request.Auth)) &&
+		((strings.ToLower(request.Auth) == "null" && entry.Auth == "") || strings.Contains(strings.ToLower(entry.Auth), strings.ToLower(request.Auth))) &&
 		strings.Contains(strings.ToLower(entry.Cors), strings.ToLower(request.Cors)) &&
 		strings.Contains(strings.ToLower(entry.Category), strings.ToLower(request.Category)) {
 		if request.HTTPS == "" {
