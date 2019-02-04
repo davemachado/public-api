@@ -5,8 +5,6 @@ import (
 	"io"
 	"math/rand"
 	"net/http"
-
-	"github.com/gorilla/schema"
 )
 
 type (
@@ -26,13 +24,13 @@ type (
 	}
 	// Entry describes a single API reference.
 	Entry struct {
-		API         string
-		Description string
-		Auth        string
-		HTTPS       bool
-		Cors        string
-		Link        string
-		Category    string
+		API         string `json:"API"`
+		Description string `json:"Description"`
+		Auth        string `json:"Auth"`
+		HTTPS       bool   `json:"HTTPS"`
+		Cors        string `json:"Cors"`
+		Link        string `json:"Link"`
+		Category    string `json:"Category"`
 	}
 )
 
@@ -44,23 +42,10 @@ func getEntriesHandler() http.Handler {
 			w.WriteHeader(http.StatusMethodNotAllowed)
 			return
 		}
-		var err error
-		searchReq := new(SearchRequest)
-		// Only check query parameters if the request's Body is not nil
-		if req.Body != nil {
-			// Decode incoming search request off the query parameters map.
-			err = schema.NewDecoder().Decode(searchReq, req.URL.Query())
-			if err != nil {
-				http.Error(w, "server failed to parse request: "+err.Error(), http.StatusBadRequest)
-				return
-			}
-			defer req.Body.Close()
-		}
-		var results []Entry
-		for _, e := range apiList.Entries {
-			if checkEntryMatches(e, searchReq) {
-				results = append(results, e)
-			}
+		results, err := processSearchRequestToMatchingEntries(req)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
 		}
 		w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -99,11 +84,16 @@ func getRandomHandler() http.Handler {
 			w.WriteHeader(http.StatusMethodNotAllowed)
 			return
 		}
+		results, err := processSearchRequestToMatchingEntries(req)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
 		w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("Access-Control-Allow-Origin", "*")
-		err := json.NewEncoder(w).Encode(Entries{
+		err = json.NewEncoder(w).Encode(Entries{
 			Count:   1,
-			Entries: []Entry{apiList.Entries[rand.Intn(len(apiList.Entries))]},
+			Entries: []Entry{results[rand.Intn(len(results))]},
 		})
 		if err != nil {
 			http.Error(w, "server failed to encode response object: "+err.Error(), http.StatusInternalServerError)
