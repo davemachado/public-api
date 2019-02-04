@@ -42,7 +42,17 @@ Parameter | Type | Data Type | Description | Required
 *List a single entry selected at random*
 
 ### Parameters
-None
+Parameter | Type | Data Type | Description | Required
+| --- | --- | --- | --- | --- |
+| title | query | string | name of entry (matches via substring - i.e. "at" would return "cat" and "atlas") | No |
+| description | query | string | description of entry (matches via substring) | No |
+| auth | query | string | auth type of entry (can only be values matching in project or null) | No |
+| https | query | bool | return entries that support HTTPS or not | No |
+| cors | query | string | CORS support for entry ("yes", "no", or "unknown") | No |
+| category | query | string | return entries of a specific category | No |
+
+#### Example
+/random?auth=null
 
 ## **GET** /categories
 

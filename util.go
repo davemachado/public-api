@@ -2,9 +2,13 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
+	"net/http"
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/gorilla/schema"
 )
 
 // getList initializes an Entries struct filled from the public-apis project
@@ -53,4 +57,21 @@ func checkEntryMatches(entry Entry, request *SearchRequest) bool {
 		}
 	}
 	return false
+}
+
+// processSearchRequestToMatchingEntries decodes the request body into a SearchRequest struct that can
+// be processed in a call to checkEntryMatches to return all matching entries.
+func processSearchRequestToMatchingEntries(req *http.Request) ([]Entry, error) {
+	searchReq := new(SearchRequest)
+	// Decode incoming search request off the query parameters map.
+	if err := schema.NewDecoder().Decode(searchReq, req.URL.Query()); err != nil {
+		return nil, fmt.Errorf("server failed to parse request: %v", err)
+	}
+	var results []Entry
+	for _, e := range apiList.Entries {
+		if checkEntryMatches(e, searchReq) {
+			results = append(results, e)
+		}
+	}
+	return results, nil
 }

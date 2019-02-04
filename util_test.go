@@ -1,6 +1,11 @@
 package main
 
-import "testing"
+import (
+	"net/http"
+	"net/url"
+	"reflect"
+	"testing"
+)
 
 func TestGetCategories(t *testing.T) {
 	actual := parseCategories([]Entry{
@@ -75,4 +80,58 @@ func TestCheckEntryMatches(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestProcessSearchRequestToMatchingEntries(t *testing.T) {
+	apiList.Entries = []Entry{
+		Entry{
+			API:         "examplesAsAService",
+			Description: "provide classic examples",
+			Auth:        "apiKey",
+			HTTPS:       true,
+			Cors:        "Unknown",
+			Link:        "http://www.example.com",
+			Category:    "Development",
+		},
+		Entry{
+			API:         "examplesAsAServiceToo",
+			Description: "provide classic examples",
+			Auth:        "",
+			HTTPS:       true,
+			Cors:        "Yes",
+			Link:        "http://www.example.com",
+			Category:    "Development",
+		},
+	}
+	testCases := []struct {
+		name     string
+		query    string
+		expected []Entry
+	}{
+		{"null auth", "?auth=null", []Entry{apiList.Entries[1]}},
+		{"apiKey auth", "?auth=apiKey", []Entry{apiList.Entries[0]}},
+		{"multi-key query", "?auth=null&description=example", []Entry{apiList.Entries[1]}},
+		{"multi-key query full match", "?category=development&description=example", apiList.Entries},
+		{"fully-matching description", "?description=example", apiList.Entries},
+		{"unkwown cors", "?cors=unknown", []Entry{apiList.Entries[0]}},
+		{"yes cors", "?cors=yes", []Entry{apiList.Entries[1]}},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			u, err := url.Parse(tc.query)
+			if err != nil {
+				t.Fatal(err)
+			}
+			req := &http.Request{URL: u}
+			actual, err := processSearchRequestToMatchingEntries(req)
+			if err != nil {
+				t.Error(err)
+			}
+			if !reflect.DeepEqual(actual, tc.expected) {
+				t.Errorf("unexpected matched entries:\nreceived %+v\nexpected %+v\n", actual, tc.expected)
+			}
+		})
+	}
+
 }
