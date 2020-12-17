@@ -37,6 +37,8 @@ Parameter | Type | Data Type | Description | Required
 #### Example
 /entries?category=animals&https=true
 
+> For categories like "Science & Math" which have a space and an ampersand, the query is simply the first word. Using "Science & Math" as an example, the correct query would be `/entries?category=science`
+
 ## **GET** /random
 
 *List a single entry selected at random*
