@@ -68,11 +68,10 @@ func main() {
 		negroni.Wrap(healthCheckHandler()),
 	))
 
-	n := negroni.New()
+	n := negroni.New(negroni.HandlerFunc(logger.logFunc), negroni.HandlerFunc(encodeURL))
 	recovery := negroni.NewRecovery()
 	recovery.PrintStack = false
 	n.Use(recovery)
-	n.Use(negroni.HandlerFunc(logger.logFunc))
 	n.UseHandler(mux)
 
 	log.Println("logging requests in " + filename)

@@ -4,12 +4,19 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
 	"os"
 	"strconv"
 	"strings"
 
 	"github.com/gorilla/schema"
 )
+
+func encodeURL(rw http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
+	encoded := strings.Replace(r.URL.String(), "%20&%20", "%20%26%20", -1)
+	r.URL, _ = url.Parse(encoded)
+	next(rw, r)
+}
 
 // getList initializes an Entries struct filled from the public-apis project
 func getList(jsonFile string) {

@@ -2,10 +2,32 @@ package main
 
 import (
 	"net/http"
+	"net/http/httptest"
 	"net/url"
 	"reflect"
 	"testing"
 )
+
+func TestEncodeURL(t *testing.T) {
+	testCases := []struct {
+		actual   string
+		expected string
+	}{
+		{"/entries?category=Science%20%26%20Math", "/entries?category=Science%20%26%20Math"},
+		{"/entries?category=Science & Math", "/entries?category=Science & Math"},
+		{"/entries?category=Science%20Math", "/entries?category=Science%20Math"},
+	}
+
+	for _, tc := range testCases {
+		req, _ := http.NewRequest("GET", tc.actual, nil)
+		rr := httptest.NewRecorder()
+		encodeURL(rr, req,
+			http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {}))
+		if req.URL.String() != tc.expected {
+			t.Errorf("incorrect encoding: expected %q, got %q", tc.expected, tc.actual)
+		}
+	}
+}
 
 func TestGetCategories(t *testing.T) {
 	actual := parseCategories([]Entry{
