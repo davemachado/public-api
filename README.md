@@ -71,4 +71,4 @@ None
 None
 
 ---
-[![DigitalOcean](static/DO_Powered_by_Badge_black.png)](https://www.digitalocean.com/)
+[![DigitalOcean](static/DO_Powered_by_Badge_blue.png)](https://www.digitalocean.com/)
