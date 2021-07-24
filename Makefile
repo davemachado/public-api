@@ -30,4 +30,5 @@ data:
 	@rm /tmp/public-apis.md
 
 html:
-	pandoc --from markdown_github --to html --standalone README.md | sed -e "s/static\/DO_Powered/DO_Powered/g" > static/index.html
+	mkdir static
+	pandoc --from markdown_github --to html --standalone README.md > static/index.html
