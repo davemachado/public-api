@@ -7,8 +7,6 @@ Welcome to the official public API for the [public-apis](https://github.com/todd
 
 This service supports [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) and requires no authentication to use. All responses are sent over HTTPS as well.
 
-Please note that this service is still in beta, so some aspects are subject to change (base URL, documentation, etc).
-
 If you would like to leave feedback or request a feature, please [open an issue](https://github.com/davemachado/public-api/issues). If you would like to contribute, feel free to [open a pull request](https://github.com/davemachado/public-api/pulls).
 
 ## Github Project
