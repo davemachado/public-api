@@ -30,5 +30,5 @@ data:
 	@rm /tmp/public-apis.md
 
 html:
-	mkdir static
+	mkdir -p static
 	pandoc --from markdown_github --to html --standalone README.md > static/index.html
