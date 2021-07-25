@@ -32,10 +32,7 @@ Parameter | Type | Data Type | Description | Required
 | cors | query | string | CORS support for entry ("yes", "no", or "unknown") | No |
 | category | query | string | return entries of a specific category | No |
 
-#### Example
-/entries?category=animals&https=true
-
-> For categories like "Science & Math" which have a space and an ampersand, the query is simply the first word. Using "Science & Math" as an example, the correct query would be `/entries?category=science`
+> For categories like "Science & Math" which have a space and an ampersand, the query is simply the first word. Using "Science & Math" as an example, the correct query would be `category=science`
 
 ## **GET** /random
 
@@ -50,9 +47,6 @@ Parameter | Type | Data Type | Description | Required
 | https | query | bool | return entries that support HTTPS or not | No |
 | cors | query | string | CORS support for entry ("yes", "no", or "unknown") | No |
 | category | query | string | return entries of a specific category | No |
-
-#### Example
-/random?auth=null
 
 ## **GET** /categories
 
