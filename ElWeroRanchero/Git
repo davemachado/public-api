@@ -1,1 +1,137 @@
+← main.go
 
+1
+
+2
+
+package main
+
+3 import "fmt" 4 import "log"
+
+5
+
+import "net/http"
+
+6 import "encoding/json" import "github.com/gorilla/mux"
+
+7 8
+
+9 type Item struct {
+
+10
+
+UID
+
+11 Name string
+
+12
+
+13
+
+14 }
+
+15
+
+string 'json: "UID"
+
+'json: "Name"
+
+Desc string 'json: "Desc" Price float64 json: "Price"
+
+16 var investory []Item
+
+17
+
+18 func homePage(w http.ResponseWriter, r
+
+*http.Request) {
+
+fmt.Fprintf(w,
+
+"Endpoint called: homePage()")
+
+20 }
+
+21
+
+22 func getInvestories (w http.
+
+23
+
+ResponseWriter, r *http.Request) { w.Header ().Set("Content-Type", "application/json")
+
+json. NewEncoder (w). Encode(
+
+investory)
+
+26 }
+
+27
+
+28
+
+29
+
+func getInvestory (w http. ResponseWriter
+
+r *http.Request) { w.Header().Set("Content-Type", "application/json")
+
+params
+
+= mux.Vars(r)
+
+// Remove old item item, err := getItemAtUid(
+
+params["uid"])
+
+if err
+
+Encode (Item{})
+
+} else {
+
+== true {
+
+json. NewEncoder (w).
+
+19
+
+24
+
+25
+
+30
+
+31
+
+32
+
+33
+
+34
+
+35
+
+36
+
+37
+
+38
+
+json. NewEncoder (w).
+
+Encode (item)
+
+}
+
+39
+
+40 }
+
+41
+
+42
+
+func createInvestory (w http.
+
+ResponseWriter, r *http.Request) {
