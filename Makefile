@@ -25,7 +25,7 @@ login:
 	@docker login -u ${DOCKER_USER} -p${DOCKER_PASS}
 
 data:
-	@curl -o /tmp/public-apis.md https://raw.githubusercontent.com/toddmotto/public-apis/master/README.md
+	@curl -o /tmp/public-apis.md https://raw.githubusercontent.com/public-apis/public-apis/master/README.md
 	@./md2json /tmp/public-apis.md > entries.json
 	@rm /tmp/public-apis.md
 
