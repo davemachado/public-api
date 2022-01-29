@@ -22,6 +22,11 @@ type (
 		Count   int     `json:"count"`
 		Entries []Entry `json:"entries"`
 	}
+	// Categories contains a set of category strings, and a count representing the length of that array.
+	Categories struct {
+		Count      int      `json:"count"`
+		Categories []string `json:"categories"`
+	}
 	// Entry describes a single API reference.
 	Entry struct {
 		API         string `json:"API"`
@@ -69,7 +74,10 @@ func getCategoriesHandler() http.Handler {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("Access-Control-Allow-Origin", "*")
-		err := json.NewEncoder(w).Encode(categories)
+		err := json.NewEncoder(w).Encode(Categories{
+			Count:      len(categories),
+			Categories: categories,
+		})
 		if err != nil {
 			http.Error(w, "server failed to encode response object: "+err.Error(), http.StatusInternalServerError)
 			return

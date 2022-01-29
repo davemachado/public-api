@@ -63,9 +63,9 @@ func TestGetCategoriesHandler(t *testing.T) {
 		categories   []string
 		expectedBody string
 	}{
-		{[]string{}, "[]\n"},
-		{[]string{"cat1"}, "[\"cat1\"]\n"},
-		{[]string{"cat1", "cat2", "cat3"}, "[\"cat1\",\"cat2\",\"cat3\"]\n"},
+		{[]string{}, "{\"count\":0,\"categories\":[]}\n"},
+		{[]string{"cat1"}, "{\"count\":1,\"categories\":[\"cat1\"]}\n"},
+		{[]string{"cat1", "cat2", "cat3"}, "{\"count\":3,\"categories\":[\"cat1\",\"cat2\",\"cat3\"]}\n"},
 	}
 	for _, tc := range testCases {
 		categories = tc.categories
