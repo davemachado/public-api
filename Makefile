@@ -3,8 +3,6 @@ TAG         := $$(git log -1 --pretty=%h)
 IMG         := ${NAME}:${TAG}
 LATEST      := ${NAME}:latest
 
-ENV_FLAGS   := CGO_ENABLED=0 GOOS=linux
-
 all: build
 
 dep:
@@ -14,17 +12,10 @@ test:
 	@go test -race -coverprofile=coverage.txt -covermode=atomic -v ./...
 
 build: dep test html
-	@${ENV_FLAGS} go build -o public-api
-	@docker build -t ${IMG} . -f Dockerfile.scratch
+	@docker build -t ${IMG} .
 	@docker tag ${IMG} ${LATEST}
 
-push: login
-	@docker push ${NAME}
-
-login:
-	@docker login -u ${DOCKER_USER} -p${DOCKER_PASS}
-
-data:
+data: html
 	@curl -o /tmp/public-apis.md https://raw.githubusercontent.com/public-apis/public-apis/master/README.md
 	@./md2json /tmp/public-apis.md > entries.json
 	@rm /tmp/public-apis.md

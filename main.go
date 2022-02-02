@@ -43,6 +43,9 @@ func main() {
 	// If the file does not exist, create it. Otherwise, append to the file.
 	f, err := os.OpenFile(filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
+		log.Fatal(err)
+	}
+	if err != nil {
 		panic(err)
 	}
 	logger := NewLogger(Options{
