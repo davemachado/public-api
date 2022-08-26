@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/davemachado/public-api.svg?branch=master)](https://travis-ci.org/davemachado/public-api)
 [![Go Report Card](https://goreportcard.com/badge/github.com/davemachado/public-api)](https://goreportcard.com/report/github.com/davemachado/public-api)
 
-Welcome to the official public API for the [public-apis](https://github.com/toddmotto/public-apis) project!
+Welcome to the official public API for the [public-apis](https://github.com/public-apis/public-apis) project!
 
 This service supports [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) and requires no authentication to use. All responses are sent over HTTPS as well.
 
