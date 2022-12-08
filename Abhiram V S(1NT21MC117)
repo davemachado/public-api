@@ -1,0 +1,49 @@
+1)Answer
+
+GET books?author=AUTHOR
+POST /books
+PUT /books/ID
+DELETE books/ID
+
+POST /books/search
+
+{
+  keywords :"..."
+  yearRange: {"from":1945,"to":2003},
+  genre:".."
+ }
+ 
+ 
+ 2) Answer
+ 
+ HTTP/1.1 200 OK  
+Content-Type: application/json; odata.metadata=minimal  
+OData-Version: 4.0  
+  
+{  
+   "@odata.context":"[Organization URI]/api/data/v9.2/$metadata#accounts(name)",
+   "value":[  
+      {  
+         "@odata.etag":"W/\"501097\"",
+         "name":"Fourth Coffee (sample)",
+         "accountid":"89390c24-9c72-e511-80d4-00155d2a68d1"
+      },
+      {  
+         "@odata.etag":"W/\"501098\"",
+         "name":"Litware, Inc. (sample)",
+         "accountid":"8b390c24-9c72-e511-80d4-00155d2a68d1"
+      },
+      {  
+         "@odata.etag":"W/\"501099\"",
+         "name":"Adventure Works (sample)",
+         "accountid":"8d390c24-9c72-e511-80d4-00155d2a68d1"
+      }
+   ]
+}
+ 
+ 
+ Theoritical answer:
+ 
+ df=pd.Data frame(<"A":[5,7,9],"B":[3,8,9], "C":[10,15,24]})
+ print(df)
+ 
